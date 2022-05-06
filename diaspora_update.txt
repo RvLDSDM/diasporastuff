@@ -1,0 +1,81 @@
+diaspora update 0.7.16 to 0.7.17.0 complete version. Executed and working on Proxmox VM
+
+su diaspora
+cd
+
+sudo systemctl stop diaspora.target diaspora-sidekiq.service diaspora-web.service
+
+rvm get latest
+rvm install 2.6
+cd diaspora
+git checkout Gemfile.lock
+git pull
+
+cd .. && cd -
+sudo gem install bundler:1.17.3
+script/configure_bundler
+sudo apt update && sudo apt install ruby-dev
+bundle install   
+bin/bundle --full-index  
+
+
+RAILS_ENV=production bin/rake db:migrate
+RAILS_ENV=production bin/rake assets:precompile
+
+cd 
+cd diaspora
+
+nano config/eye.rb
+-----
+
+inside the process :web do block (top, 2nd line in block before if rails env),  add a 
+
+start_timeout 30.seconds
+
+-----
+
+./script/server
+ctrl-c
+
+NEW SHELL !!!
+
+./script/server
+
+should be online now, ctrl-c again then 
+systemctl reboot -i
+
+FIX, if pod not starting after reboot reinstall Rails:
+
+    exectute [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" and source ~/.bashrc in /home/diaspora under the specific user again
+    Executed bundle install
+
+systemctl status beforw this fix
+
+● diaspora-sidekiq.service - Diaspora social network (sidekiq)
+   Loaded: loaded (/etc/systemd/system/diaspora-sidekiq.service; enabled; vendor preset: enabled)
+   Active: failed (Result: exit-code) since Thu 2022-05-05 15:21:39 CEST; 814ms ago
+  Process: 3485 ExecStart=/bin/bash -lc bin/bundle exec sidekiq (code=exited, status=1/FAILURE)
+ Main PID: 3485 (code=exited, status=1/FAILURE)
+
+May 05 15:21:39 diaspora systemd[1]: diaspora-sidekiq.service: Failed with result 'exit-code'.
+May 05 15:21:39 diaspora systemd[1]: diaspora-sidekiq.service: Service RestartSec=100ms expired, scheduling restart.
+May 05 15:21:39 diaspora systemd[1]: diaspora-sidekiq.service: Scheduled restart job, restart counter is at 5.
+May 05 15:21:39 diaspora systemd[1]: Stopped Diaspora social network (sidekiq).
+May 05 15:21:39 diaspora systemd[1]: diaspora-sidekiq.service: Start request repeated too quickly.
+May 05 15:21:39 diaspora systemd[1]: diaspora-sidekiq.service: Failed with result 'exit-code'.
+May 05 15:21:39 diaspora systemd[1]: Failed to start Diaspora social network (sidekiq).
+
+● diaspora-web.service - Diaspora social network (unicorn)
+   Loaded: loaded (/etc/systemd/system/diaspora-web.service; enabled; vendor preset: enabled)
+   Active: failed (Result: exit-code) since Thu 2022-05-05 15:21:39 CEST; 568ms ago
+  Process: 3647 ExecStart=/bin/bash -lc bin/bundle exec unicorn -c config/unicorn.rb -E production (code=exited, status=1/FAILURE) 
+
+
+
+
+
+
+
+
+
+
