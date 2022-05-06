@@ -46,8 +46,8 @@ systemctl reboot -i
 
 FIX, if pod not starting after reboot reinstall Rails:
 
-    exectute [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" and source ~/.bashrc in /home/diaspora under the specific user again
-    Executed bundle install
+    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" and source ~/.bashrc in /home/diaspora under the specific user again
+    bundle install
 
 systemctl status beforw this fix
 
