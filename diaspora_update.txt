@@ -49,7 +49,7 @@ FIX, if pod not starting after reboot reinstall Rails in /home/diaspora under th
     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" and source ~/.bashrc 
     bundle install
 
-systemctl status beforw this fix
+systemctl status before this fix
 
 ● diaspora-sidekiq.service - Diaspora social network (sidekiq)
    Loaded: loaded (/etc/systemd/system/diaspora-sidekiq.service; enabled; vendor preset: enabled)
