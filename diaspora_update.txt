@@ -44,9 +44,9 @@ NEW SHELL !!!
 should be online now, ctrl-c again then 
 systemctl reboot -i
 
-FIX, if pod not starting after reboot reinstall Rails:
+FIX, if pod not starting after reboot reinstall Rails in /home/diaspora under the specific diaspora user again
 
-    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" and source ~/.bashrc in /home/diaspora under the specific user again
+    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" and source ~/.bashrc 
     bundle install
 
 systemctl status beforw this fix
